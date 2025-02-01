@@ -44,10 +44,13 @@
 I2C_HandleTypeDef hi2c1;
 
 /* USER CODE BEGIN PV */
-extern I2C_HandleTypeDef hi2c1;
+
+uint8_t who_am_i1;
 
 stmdev_ctx_t lsm6dsox_ctx;
 stmdev_ctx_t lis3mdl_ctx;
+
+uint8_t test_data = 0xAA;
 
 float accel_x, accel_y, accel_z;
 float gyro_x, gyro_y, gyro_z;
@@ -125,11 +128,7 @@ int main(void) {
 		LSM6DSOX_ReadGyro(&gyro_x, &gyro_y, &gyro_z);
 		LIS3MDL_ReadMag(&mag_x, &mag_y, &mag_z);
 
-		// Debug: Print sensor data over UART
-		printf("Accel: X=%.2f Y=%.2f Z=%.2f\n", accel_x, accel_y, accel_z);
-		printf("Gyro: X=%.2f Y=%.2f Z=%.2f\n", gyro_x, gyro_y, gyro_z);
-		printf("Mag:  X=%.2f Y=%.2f Z=%.2f\n", mag_x, mag_y, mag_z);
-
+//		test_I2C_Communication();
 		HAL_Delay(500);
 		/* USER CODE BEGIN 3 */
 	}
@@ -223,8 +222,29 @@ static void MX_GPIO_Init(void) {
 }
 
 /* USER CODE BEGIN 4 */
+
+
+void test_I2C_Communication() {
+    HAL_StatusTypeDef status;
+
+    // 1. Try sending a test byte to the LSM6DSOX address (default: 0x6A)
+    uint8_t device_address = 0x6A << 1;  // Shifted for 7-bit address format
+
+    status = HAL_I2C_Master_Transmit(&hi2c1, device_address, &test_data, 1, HAL_MAX_DELAY);
+
+    if (status == HAL_OK) {
+        char msg[] = "I2C Write OK\r\n";
+//        HAL_UART_Transmit(&huart2, (uint8_t*)msg, sizeof(msg), HAL_MAX_DELAY);
+    } else {
+        char msg[] = "I2C Write FAIL\r\n";
+        //HAL_UART_Transmit(&huart2, (uint8_t*)msg, sizeof(msg), HAL_MAX_DELAY);
+    }
+}
+
+
+
 void LSM6DSOX_Init(void) {
-    uint8_t who_am_i;
+
 
     // Initialize context
     lsm6dsox_ctx.write_reg = platform_write;
@@ -232,10 +252,9 @@ void LSM6DSOX_Init(void) {
     lsm6dsox_ctx.handle = &hi2c1;
 
     // Check WHO_AM_I register
-    lsm6dsox_device_id_get(&lsm6dsox_ctx, &who_am_i);
-    if (who_am_i != LSM6DSOX_ID) {
-        printf("LSM6DSOX not detected! WHO_AM_I=0x%02X\n", who_am_i);
-        while (1);
+    lsm6dsox_device_id_get(&lsm6dsox_ctx, &who_am_i1);
+    if (who_am_i1 != LSM6DSOX_ID) {
+       // while (1);
     }
 
     // Reset device
@@ -272,10 +291,10 @@ void LIS3MDL_Init(void) {
 
     // Check WHO_AM_I register
     lis3mdl_device_id_get(&lis3mdl_ctx, &who_am_i);
-    if (who_am_i != LIS3MDL_ID) {
-        printf("LIS3MDL not detected! WHO_AM_I=0x%02X\n", who_am_i);
-        while (1);
-    }
+  //  if (who_am_i != LIS3MDL_ID) {
+  //      printf("LIS3MDL not detected! WHO_AM_I=0x%02X\n", who_am_i);
+  //      while (1);
+  //  }
 
     // Reset device
     lis3mdl_reset_set(&lis3mdl_ctx, PROPERTY_ENABLE);
@@ -329,7 +348,6 @@ void LIS3MDL_ReadMag(float *x, float *y, float *z) {
  * @brief Platform-specific write function.
  */
 int32_t platform_write(void *handle, uint8_t reg, const uint8_t *bufp, uint16_t len) {
-    return HAL_I2C_Mem_Write((I2C_HandleTypeDef *)handle, LSM6DSOX_I2C_ADD_H, reg, I2C_MEMADD_SIZE_8BIT, (uint8_t *)bufp, len, HAL_MAX_DELAY);
 }
 
 /**
