@@ -1,0 +1,15 @@
+../Core/Src/Wire.cpp:8:1:TwoWire::TwoWire()	1
+../Core/Src/Wire.cpp:19:6:void TwoWire::beginTransmission(uint8_t)	1
+../Core/Src/Wire.cpp:27:6:void TwoWire::beginTransmission(int)	1
+../Core/Src/Wire.cpp:31:9:uint8_t TwoWire::endTransmission()	3
+../Core/Src/Wire.cpp:44:9:uint8_t TwoWire::requestFrom(uint8_t, int)	3
+../Core/Src/Wire.cpp:60:9:uint8_t TwoWire::requestFrom(int, int)	1
+../Core/Src/Wire.cpp:64:6:void TwoWire::write(uint8_t)	2
+../Core/Src/Wire.cpp:73:6:void TwoWire::write(uint8_t*, int)	2
+../Core/Src/Wire.cpp:77:6:void TwoWire::write(int)	1
+../Core/Src/Wire.cpp:81:6:void TwoWire::write(int*, int)	1
+../Core/Src/Wire.cpp:85:6:void TwoWire::write(char*)	2
+../Core/Src/Wire.cpp:93:9:uint8_t TwoWire::available()	1
+../Core/Src/Wire.cpp:97:9:uint8_t TwoWire::read()	2
+../Core/Src/Wire.cpp:103:13:void __static_initialization_and_destruction_0(int, int)	3
+../Core/Src/Wire.cpp:103:13:cpp)	1

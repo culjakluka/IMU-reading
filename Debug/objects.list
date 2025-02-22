@@ -1,4 +1,7 @@
-"./Core/Src/lis3mdl_reg.o"
+"./Core/Src/LIS3MDLSensor.o"
+"./Core/Src/LIS3MDL_MAG_Driver.o"
+"./Core/Src/LSM6DSOXSensor.o"
+"./Core/Src/Wire.o"
 "./Core/Src/lsm6dsox_reg.o"
 "./Core/Src/main.o"
 "./Core/Src/stm32f4xx_hal_msp.o"

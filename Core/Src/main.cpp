@@ -21,8 +21,9 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "lsm6dsox_reg.h"
-#include "lis3mdl_reg.h"
+
+#include "LIS3MDLSensor.h"
+#include "LSM6DSOXSensor.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -50,7 +51,6 @@ uint8_t who_am_i1;
 stmdev_ctx_t lsm6dsox_ctx;
 stmdev_ctx_t lis3mdl_ctx;
 
-uint8_t test_data = 0xAA;
 
 float accel_x, accel_y, accel_z;
 float gyro_x, gyro_y, gyro_z;
@@ -63,18 +63,33 @@ static void MX_GPIO_Init(void);
 static void MX_I2C1_Init(void);
 /* USER CODE BEGIN PFP */
 // I2C read and write functions
-int32_t platform_write(void *handle, uint8_t reg, const uint8_t *bufp,
-		uint16_t len);
-int32_t platform_read(void *handle, uint8_t reg, uint8_t *bufp, uint16_t len);
 
 // Initialization functions
-void LSM6DSOX_Init(void);
-void LIS3MDL_Init(void);
+void LSM6DSOX_Init(void){
+	return;
+}
+void LIS3MDL_Init(void){
+	return;
+}
 
 // Sensor data read functions
-void LSM6DSOX_ReadAccel(float *x, float *y, float *z);
-void LSM6DSOX_ReadGyro(float *x, float *y, float *z);
-void LIS3MDL_ReadMag(float *x, float *y, float *z);
+void LSM6DSOX_ReadAccel(float *x, float *y, float *z) {
+    return;
+}
+
+/**
+ * @brief Read gyroscope data.
+ */
+void LSM6DSOX_ReadGyro(float *x, float *y, float *z) {
+    return;
+}
+
+/**
+ * @brief Read magnetometer data.
+ */
+void LIS3MDL_ReadMag(float *x, float *y, float *z) {
+    return;
+}
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -129,7 +144,6 @@ int main(void) {
 		LIS3MDL_ReadMag(&mag_x, &mag_y, &mag_z);
 
 //		test_I2C_Communication();
-		HAL_Delay(500);
 		/* USER CODE BEGIN 3 */
 	}
 	/* USER CODE END 3 */
@@ -224,24 +238,6 @@ static void MX_GPIO_Init(void) {
 /* USER CODE BEGIN 4 */
 
 
-void test_I2C_Communication() {
-    HAL_StatusTypeDef status;
-
-    // 1. Try sending a test byte to the LSM6DSOX address (default: 0x6A)
-    uint8_t device_address = 0x6A << 1;  // Shifted for 7-bit address format
-
-    status = HAL_I2C_Master_Transmit(&hi2c1, device_address, &test_data, 1, HAL_MAX_DELAY);
-
-    if (status == HAL_OK) {
-        char msg[] = "I2C Write OK\r\n";
-//        HAL_UART_Transmit(&huart2, (uint8_t*)msg, sizeof(msg), HAL_MAX_DELAY);
-    } else {
-        char msg[] = "I2C Write FAIL\r\n";
-        //HAL_UART_Transmit(&huart2, (uint8_t*)msg, sizeof(msg), HAL_MAX_DELAY);
-    }
-}
-
-
 
 void LSM6DSOX_Init(void) {
 
@@ -314,48 +310,11 @@ void LIS3MDL_Init(void) {
 /**
  * @brief Read accelerometer data.
  */
-void LSM6DSOX_ReadAccel(float *x, float *y, float *z) {
-    int16_t data_raw[3];
-    lsm6dsox_acceleration_raw_get(&lsm6dsox_ctx, data_raw);
-    *x = lsm6dsox_from_fs2_to_mg(data_raw[0]) / 1000.0f;
-    *y = lsm6dsox_from_fs2_to_mg(data_raw[1]) / 1000.0f;
-    *z = lsm6dsox_from_fs2_to_mg(data_raw[2]) / 1000.0f;
-}
 
-/**
- * @brief Read gyroscope data.
- */
-void LSM6DSOX_ReadGyro(float *x, float *y, float *z) {
-    int16_t data_raw[3];
-    lsm6dsox_angular_rate_raw_get(&lsm6dsox_ctx, data_raw);
-    *x = lsm6dsox_from_fs2000_to_mdps(data_raw[0]) / 1000.0f;
-    *y = lsm6dsox_from_fs2000_to_mdps(data_raw[1]) / 1000.0f;
-    *z = lsm6dsox_from_fs2000_to_mdps(data_raw[2]) / 1000.0f;
-}
-
-/**
- * @brief Read magnetometer data.
- */
-void LIS3MDL_ReadMag(float *x, float *y, float *z) {
-    int16_t data_raw[3];
-    lis3mdl_magnetic_raw_get(&lis3mdl_ctx, data_raw);
-    *x = lis3mdl_from_fs4_to_gauss(data_raw[0]);
-    *y = lis3mdl_from_fs4_to_gauss(data_raw[1]);
-    *z = lis3mdl_from_fs4_to_gauss(data_raw[2]);
-}
 
 /**
  * @brief Platform-specific write function.
  */
-int32_t platform_write(void *handle, uint8_t reg, const uint8_t *bufp, uint16_t len) {
-}
-
-/**
- * @brief Platform-specific read function.
- */
-int32_t platform_read(void *handle, uint8_t reg, uint8_t *bufp, uint16_t len) {
-    return HAL_I2C_Mem_Read((I2C_HandleTypeDef *)handle, LSM6DSOX_I2C_ADD_H, reg, I2C_MEMADD_SIZE_8BIT, bufp, len, HAL_MAX_DELAY);
-}
 /* USER CODE END 4 */
 
 /**

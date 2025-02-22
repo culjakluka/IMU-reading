@@ -1,0 +1,15 @@
+../Core/Src/Wire.cpp:8:1:TwoWire::TwoWire()	16	static
+../Core/Src/Wire.cpp:19:6:void TwoWire::beginTransmission(uint8_t)	16	static
+../Core/Src/Wire.cpp:27:6:void TwoWire::beginTransmission(int)	16	static
+../Core/Src/Wire.cpp:31:9:uint8_t TwoWire::endTransmission()	32	static
+../Core/Src/Wire.cpp:44:9:uint8_t TwoWire::requestFrom(uint8_t, int)	40	static
+../Core/Src/Wire.cpp:60:9:uint8_t TwoWire::requestFrom(int, int)	24	static
+../Core/Src/Wire.cpp:64:6:void TwoWire::write(uint8_t)	16	static
+../Core/Src/Wire.cpp:73:6:void TwoWire::write(uint8_t*, int)	32	static
+../Core/Src/Wire.cpp:77:6:void TwoWire::write(int)	16	static
+../Core/Src/Wire.cpp:81:6:void TwoWire::write(int*, int)	24	static
+../Core/Src/Wire.cpp:85:6:void TwoWire::write(char*)	24	static
+../Core/Src/Wire.cpp:93:9:uint8_t TwoWire::available()	16	static
+../Core/Src/Wire.cpp:97:9:uint8_t TwoWire::read()	16	static
+../Core/Src/Wire.cpp:103:13:void __static_initialization_and_destruction_0(int, int)	16	static
+../Core/Src/Wire.cpp:103:13:cpp)	8	static
